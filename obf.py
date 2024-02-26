@@ -2,39 +2,6 @@ import re
 import random
 import string
 
-def whitespace_remover(a):
-    """
-    Function to remove all whitespace, except for after functions, variables, and imports
-    """
-    splits = re.split('\"',a)
-    code_string = "((\w+\s+)[a-zA-Z_*][|a-zA-Z0-9_]*|#.*|return [a-zA-Z0-9_]*| [[.].]|else)"
-    index = 0
-    a = ""
-    for s in splits:
-            # If its not the contents of a string, remove spaces of everything but code
-            if(index%2==0):                
-              s_spaceless = re.sub("[\s]", "", s)          # Create a spaceless version of s
-              s_code = re.findall(code_string,s)           # find all spaced code blocks in s
-
-              for code in s_code:
-               old = re.sub("[\s]", "", code[0])
-               new = code[0]
-
-               if(code[0][0] == '#'):
-                 new = code[0] + "\n"                      # Adding a newline for preprocesser commands
-               elif("unsigned" in code[0] or "else" in code[0]):
-                 new = code[0] + " "
-               s_spaceless = s_spaceless.replace(old,new) # Replace the spaceless code blocks in s with their spaced equivilents                
-            else:
-              s_spaceless = s
-
-            if(index >= 1):
-             a = a + "\"" + s_spaceless
-            else:
-             a = a + s_spaceless
-            index+=1
-    return a
-
 def find_cpp_functions(content):
     # Use regular expression to find all function declarations
     function_declarations = re.finditer(r'\b\w+\s+(\w+)\s*\(.*\)\s*{', content)
@@ -90,8 +57,6 @@ def remove_comments_and_replace_variables(file_path, excluded_functions=None):
         function_names = [func for func in function_names if func not in excluded_functions]
 
     random_function_names = [''.join(random.choice(string.ascii_letters) for _ in range(8)) for _ in range(len(function_names))]
-
-    content = whitespace_remover(content)
 
     # Replace function names with random strings and print the original and replaced function names
     for old, new in zip(function_names, random_function_names):
