@@ -66,7 +66,7 @@ def remove_comments_and_replace_variables(file_path, excluded_functions=None):
     with open(file_path, 'w') as file:
         file.write(content)
 
-file_path = "Input.cpp"
+file_path = "Source.cpp"
 excluded_functions = ["main", "WinMain", "WinMainCRTStartup", "wWinMain", "wWinMainCRTStartup", "wmain", "mainCRTStartup", "wmainCRTStartup", "WinMainWOW", "WinMainWOW64"]  # Add functions you want to exclude here
 remove_comments_and_replace_variables(file_path, excluded_functions)
 print("Comments removed, variables replaced with random strings, and junk variables inserted in the file.")
